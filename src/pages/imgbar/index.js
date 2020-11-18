@@ -9,26 +9,26 @@ export default function App() {
     const [previewImage, setPreviewImage] = useState('')
     const [fileList, setFileList] = useState([])
     // 图片上传
-    const uploadChange = e => {
-        if (Array.isArray(e)) {
-            return e.map(item => { item.status = 'done'; return item });
-        }
-        return e.fileList.map(item => { item.status = 'done'; return item })
-    }
-    useEffect(() => {
+    // const uploadChange = e => {
+    //     if (Array.isArray(e)) {
+    //         return e.map(item => { item.status = 'done'; return item });
+    //     }
+    //     return e.fileList.map(item => { item.status = 'done'; return item })
+    // }
+    const collectFun = () => {
         //收集图片dom
         let images = document.querySelectorAll('.imgbar .ant-upload-list-item-image');
+        console.log(images,'images');
         [].forEach.call(images, el => {
             if (!el.attributes.draggable) {
                 el.setAttribute('draggable', true);
                 el.addEventListener('dragstart', e => {
-                    console.log(e,'e');
-                    console.log(el,'el');
-                    // e.dataTransfer.setData('imgData', JSON.stringify(el));
+                    // e.dataTransfer.setData('imgData', JSON.stringify({ url: e.target.currentSrc }));
+                    console.log(e.target.currentSrc, 'ss')
                 });
             }
         })
-    });
+    }
     function getBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -50,7 +50,8 @@ export default function App() {
 
     const handleChange = ({ fileList }) => {
         const list = fileList.map(item => { item.status = 'done'; return item });
-        setFileList(list)
+        collectFun();
+        setFileList(list);
     };
     return (
         <div className="imgbar">
